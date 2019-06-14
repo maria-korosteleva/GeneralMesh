@@ -1,6 +1,20 @@
+// GeneralMesh is a simple class to work with meshes (static, so far)
+//
+// * loads the files in .obj or .ply
+// * performs heuristic normalization 
+//      * puts the mesh in the world center 
+//      * scales it to the meters units (simple heuristic, may not work for large objects or on arbitrary scales)
+//      * but allows to access both normalized and original unnormalized vertices 
+// * provides access to geometry in different formats  
+//      * Eigen, for compatibility with libigl
+//      * glm, for compatibility with OpenGL
+// * is able to load the list of the designated vertices with names (optional),
+//   see example of the file in the GeneralMeash example project (key_vertices_example.txt)
+// 
+
 #pragma once
 
-// Fix compillation errors
+// Fix compilation errors
 #ifdef _MSC_VER
 #pragma warning(disable:4996)
 #endif
@@ -67,4 +81,3 @@ private:
 
     CoordsDictionary key_points_;
 };
-
