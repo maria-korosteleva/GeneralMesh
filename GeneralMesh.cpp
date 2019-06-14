@@ -28,11 +28,9 @@ GeneralMesh::GeneralMesh(const char* input_filename_c, const char* key_vertices_
 
 }
 
-
 GeneralMesh::~GeneralMesh()
 {
 }
-
 
 void GeneralMesh::readFile_(const std::string & filename)
 {
