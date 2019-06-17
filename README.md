@@ -5,6 +5,7 @@ GeneralMesh is a simple class to work with meshes (static, so far)
 ## Dependencies:
 * libigl (reading files and some computations)
 * glm
+
 (on Win you could borrow them here: https://motionlab.kaist.ac.kr/git/mariako/Installed_libs)
 
 ## How to use (VisualStudio):
