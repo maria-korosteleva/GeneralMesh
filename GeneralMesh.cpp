@@ -32,6 +32,11 @@ GeneralMesh::~GeneralMesh()
 {
 }
 
+void GeneralMesh::saveNormalizedMesh(std::string path) const
+{
+    igl::writeOBJ(path + name_ + ".obj", verts_normalized_, faces_);
+}
+
 void GeneralMesh::readFile_(const std::string & filename)
 {
     std::size_t point_pos = filename.find_last_of('.');

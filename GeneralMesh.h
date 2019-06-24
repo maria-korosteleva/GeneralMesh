@@ -29,7 +29,6 @@
 
 // for opengl-friendly conversion
 #include <glm/glm.hpp>
-
 using CoordsDictionary = std::map<std::string, Eigen::RowVectorXd>;
 using CoordsDictEntry = std::pair<std::string, Eigen::RowVectorXd>;
 
@@ -58,6 +57,8 @@ public:
     const Eigen::VectorXd& getMeanPoint() const  { return mean_point_; };
     // the user need to check the dictionary for emptiness
     const CoordsDictionary& getKeyPoints() const  { return key_points_; }
+
+    void saveNormalizedMesh(std::string path) const;
 
 private:
     void readFile_(const std::string& filename);
