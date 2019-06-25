@@ -2,7 +2,8 @@
 #include "GeneralMesh.h"
 
 
-GeneralMesh::GeneralMesh(const char* input_filename_c, const char* key_vertices_filename)
+GeneralMesh::GeneralMesh(const char* input_filename_c, Gender gender, const char* key_vertices_filename)
+    :gender_(gender)
 {   
     // check for existance
     if (!checkFileExist_(input_filename_c))

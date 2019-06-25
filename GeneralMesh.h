@@ -35,16 +35,23 @@ using CoordsDictEntry = std::pair<std::string, Eigen::RowVectorXd>;
 class GeneralMesh
 {
 public:
+    enum Gender {
+        FEMALE, 
+        MALE, 
+        UNKNOWN
+    };
+
     struct GLMVertex
     {
         glm::vec3 position;
         glm::vec3 normal;
     };
 
-    GeneralMesh(const char* input_filename_c, const char* key_vertices_filename = nullptr);
+    GeneralMesh(const char* input_filename_c, Gender gender = UNKNOWN, const char* key_vertices_filename = nullptr);
     ~GeneralMesh();
 
     const std::string& getName() const           { return name_; };
+    Gender getGender() const                     { return gender_; };
 
     const Eigen::MatrixXi& getFaces() const      { return faces_; };
     // with vertex ids staring from zero:
@@ -69,6 +76,7 @@ private:
     bool checkFileExist_(const char * filename);
 
     std::string name_;
+    Gender gender_;
 
     Eigen::MatrixXd verts_;
     Eigen::MatrixXd verts_normalized_;
