@@ -41,17 +41,23 @@ void GeneralMesh::readFile_(const std::string & filename)
 {
     std::size_t point_pos = filename.find_last_of('.');
     std::string extention = filename.substr(point_pos + 1);
+    bool sucess;
     if (extention == "obj")
     {
-        igl::readOBJ(filename, verts_, faces_);
+        sucess = igl::readOBJ(filename, verts_, faces_);
     }
     else if (extention == "ply")
     {
-        igl::readPLY(filename, verts_, faces_);
+        sucess = igl::readPLY(filename, verts_, faces_);
     }
     else
     {
-        throw std::exception("Unsupported type of input mesh. Supported types: .obj, .ply");
+        throw std::exception("GeneralMesh::Unsupported type of input mesh. Supported types: .obj, .ply");
+    }
+
+    if (!sucess || verts_.rows() == 0 || faces_.rows() == 0)
+    {
+        throw std::exception("GeneralMesh::reading mesh file failed: vertices/faces are not filled");
     }
 
     igl::per_vertex_normals(verts_, faces_, verts_normals_);
