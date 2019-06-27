@@ -16,11 +16,11 @@ GeneralMesh::GeneralMesh(const char* input_filename_c, Gender gender, const char
     }
 
     std::string input_filename(input_filename_c);
+    cutName_(input_filename);
+
     readFile_(input_filename);
     normalizeVertices_();
     glFriendlyMesh_();
-
-    cutName_(input_filename);
 
     if (key_vertices_filename != nullptr)
     {
@@ -59,6 +59,13 @@ void GeneralMesh::readFile_(const std::string & filename)
     if (!sucess || verts_.rows() == 0 || faces_.rows() == 0)
     {
         throw std::exception("GeneralMesh::reading mesh file failed: vertices/faces are not filled");
+    }
+
+    if (faces_.cols() != 3)
+    {
+        std::cout << "GeneralMesh::Warning::mesh " << name_ 
+            << " is a quad mesh. The tools were developed assuming triangle mesh" 
+            << "Unexpected behavior might occur." << std::endl;
     }
 
     igl::per_vertex_normals(verts_, faces_, verts_normals_);
