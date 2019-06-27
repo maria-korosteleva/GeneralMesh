@@ -75,7 +75,7 @@ void GeneralMesh::normalizeVertices_()
     if (verts_normalized_.col(1).maxCoeff() - verts_normalized_.col(1).minCoeff() > 100)
     {
         verts_normalized_ *= 0.01;
-        std::cout << "Warning: Mesh is found to use sm/mm units. Scaled down by 0.01" << std::endl;
+        std::cout << "Warning: Mesh " << name_ << " is found to use sm/mm units. Scaled down by 0.01" << std::endl;
     }
     // check for mm/dm
     if (verts_normalized_.col(1).maxCoeff() - verts_normalized_.col(1).minCoeff() > 10)
