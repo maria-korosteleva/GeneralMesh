@@ -23,6 +23,7 @@
 #include <igl/writeOBJ.h>
 #include <igl/readPLY.h>
 #include <igl/per_vertex_normals.h>
+#include <igl/per_face_normals.h>
 
 #include <map>
 #include <vector>
@@ -54,6 +55,7 @@ public:
     Gender getGender() const                     { return gender_; };
 
     const Eigen::MatrixXi& getFaces() const      { return faces_; };
+    const Eigen::MatrixXd& getFaceNormals() const      { return faces_normals_; };
     // with vertex ids staring from zero:
     const std::vector<unsigned int>& getGLMFaces() const      { return gl_faces_; };
 
@@ -84,6 +86,7 @@ private:
     std::vector<GLMVertex> gl_vertices_normalized_;
 
     Eigen::MatrixXi faces_;
+    Eigen::MatrixXd faces_normals_;
     std::vector<unsigned int> gl_faces_;
 
     Eigen::VectorXd mean_point_;

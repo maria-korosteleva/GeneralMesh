@@ -68,7 +68,9 @@ void GeneralMesh::readFile_(const std::string & filename)
             << "Unexpected behavior might occur." << std::endl;
     }
 
+    // normals are invariant to verts normalization - translation and scaling
     igl::per_vertex_normals(verts_, faces_, verts_normals_);
+    igl::per_face_normals(verts_, faces_, faces_normals_);
 }
 
 void GeneralMesh::normalizeVertices_()
