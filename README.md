@@ -6,8 +6,6 @@ GeneralMesh is a simple class to work with meshes (static, so far)
 * libigl (reading files and some computations)
 * glm
 
-(on Win you could borrow them here: https://motionlab.kaist.ac.kr/git/mariako/Installed_libs)
-
 ## How to use (VisualStudio):
 * Add the project directory (or parent of it) to the include directories 
          (Configuration Properties -> C/C++ -> General -> Additional Include Directories)
