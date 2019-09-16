@@ -8,11 +8,11 @@ GeneralMesh::GeneralMesh(const char* input_filename_c, Gender gender, const char
     // check for existance
     if (!checkFileExist_(input_filename_c))
     {
-        throw std::exception("General Mesh: input file doesn't exist");
+        throw std::invalid_argument("General Mesh: input file doesn't exist");
     }
     if (key_vertices_filename != nullptr && !checkFileExist_(key_vertices_filename))
     {
-        throw std::exception("General Mesh: key vertices file doesn't exist");
+        throw std::invalid_argument("General Mesh: key vertices file doesn't exist");
     }
 
     std::string input_filename(input_filename_c);
@@ -53,12 +53,12 @@ void GeneralMesh::readFile_(const std::string & filename)
     }
     else
     {
-        throw std::exception("GeneralMesh::Unsupported type of input mesh. Supported types: .obj, .ply");
+        throw std::invalid_argument("GeneralMesh::Unsupported type of input mesh. Supported types: .obj, .ply");
     }
 
     if (!sucess || verts_.rows() == 0 || faces_.rows() == 0)
     {
-        throw std::exception("GeneralMesh::reading mesh file failed: vertices/faces are not filled");
+        throw std::runtime_error("GeneralMesh::reading mesh file failed: vertices/faces are not filled");
     }
 
     if (faces_.cols() != 3)
@@ -137,7 +137,7 @@ void GeneralMesh::readKeyVertices_(const char * filename)
     // Sanity check
     if (keys_n <= 0)
     {
-        throw std::exception("Number of key vertices should be a positive number!");
+        throw std::invalid_argument("Number of key vertices should be a positive number!");
     }
 
     std::string key_name;
