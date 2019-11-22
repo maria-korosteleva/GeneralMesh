@@ -35,7 +35,7 @@ GeneralMesh::~GeneralMesh()
 
 void GeneralMesh::saveNormalizedMesh(std::string path) const
 {
-    igl::writeOBJ(path + name_ + ".obj", verts_normalized_, faces_);
+    igl::writeOBJ(path + name_with_group_ + "_normalized.obj", verts_normalized_, faces_);
 }
 
 void GeneralMesh::readFile_(const std::string & filename)
@@ -120,12 +120,15 @@ void GeneralMesh::glFriendlyMesh_()
 void GeneralMesh::cutName_(const std::string & filename)
 {
     std::size_t point_pos = filename.find_last_of('.');
-    std::size_t slash_pos = filename.find_last_of('/');
+    std::size_t slash_pos = filename.find_last_of("/\\");
+    
     std::string path = filename.substr(0, slash_pos);
-    std::string data_group = path.substr(path.find_last_of('/') + 1);
+    std::string data_group = path.substr(path.find_last_of("/\\") + 1);
     std::string object_name = filename.substr(slash_pos + 1, (point_pos - slash_pos - 1));
 
-    this->name_ = data_group + "-" + object_name;
+    name_with_group_ = data_group + "-" + object_name;
+    name_ = object_name;
+    path_ = path;
 }
 
 void GeneralMesh::readKeyVertices_(const char * filename)

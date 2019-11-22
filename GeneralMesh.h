@@ -52,6 +52,8 @@ public:
     ~GeneralMesh();
 
     const std::string& getName() const           { return name_; };
+    const std::string& getNameWithGroup() const  { return name_with_group_; };
+    const std::string& getPath() const           { return path_; };
     Gender getGender() const                     { return gender_; };
 
     const Eigen::MatrixXi& getFaces() const      { return faces_; };
@@ -78,6 +80,8 @@ private:
     bool checkFileExist_(const char * filename);
 
     std::string name_;
+    std::string name_with_group_;
+    std::string path_;
     Gender gender_;
 
     Eigen::MatrixXd verts_;
