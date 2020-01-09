@@ -2,13 +2,18 @@
 #include "GeneralMesh.h"
 
 
-GeneralMesh::GeneralMesh(const std::string& input_filename, Gender gender)
-    :gender_(gender)
+GeneralMesh::GeneralMesh(const std::string& input_filename, Gender gender, 
+    const std::string& cloth_segmentation_file)
+    :gender_(gender), is_cloth_segmented_(false)
 {   
-    // check for existance
+    // check for existance -- fast fail
     if (!checkFileExist_(input_filename))
     {
         throw std::invalid_argument("General Mesh: input file doesn't exist");
+    }
+    if (cloth_segmentation_file != "" && !checkFileExist_(input_filename))
+    {
+        throw std::invalid_argument("General Mesh: secified segmentation file doesn't exist");
     }
 
     cutName_(input_filename);
@@ -17,6 +22,11 @@ GeneralMesh::GeneralMesh(const std::string& input_filename, Gender gender)
     normalizeVertices_();
     glFriendlyMesh_();  
 
+    if (cloth_segmentation_file != "")
+    {
+        is_cloth_segmented_ = true;
+        readClothProbabilitesFile_(cloth_segmentation_file);
+    }
 }
 
 GeneralMesh::~GeneralMesh()
@@ -61,6 +71,30 @@ void GeneralMesh::readFile_(const std::string & filename)
     // normals are invariant to verts normalization - translation and scaling
     igl::per_vertex_normals(verts_, faces_, verts_normals_);
     igl::per_face_normals(verts_, faces_, faces_normals_);
+}
+
+void GeneralMesh::readClothProbabilitesFile_(const std::string & filename)
+{
+    std::ifstream inFile(filename);
+    int file_verts_n;
+    inFile >> file_verts_n;
+
+    verts_cloth_probability_.resize(verts_.rows());
+    int vert_id = 0;
+    float vert_raw_probability;
+    while (inFile >> vert_raw_probability)
+    {
+        if (vert_id >= verts_.rows()) // prevent crashes
+            throw std::invalid_argument("GeneralMesh: length of segmentation list doesn't match the number of vertices in the mesh.");
+
+        // need normalization as it's [-1, 1] in the file
+        verts_cloth_probability_[vert_id] = (vert_raw_probability + 1.) / 2.;
+        vert_id++;
+    }
+
+    // final sanity check
+    if (vert_id != verts_.rows())
+        throw std::invalid_argument("GeneralMesh: length of segmentation list doesn't match the number of vertices in the mesh.");
 }
 
 void GeneralMesh::normalizeVertices_()

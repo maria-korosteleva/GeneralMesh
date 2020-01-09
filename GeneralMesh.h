@@ -46,7 +46,7 @@ public:
         glm::vec3 normal;
     };
 
-    GeneralMesh(const std::string& input_filename, Gender gender = UNKNOWN);
+    GeneralMesh(const std::string& input_filename, Gender gender = UNKNOWN, const std::string& cloth_segmentation_file = "");
     ~GeneralMesh();
 
     const std::string& getName() const           { return name_; };
@@ -62,13 +62,17 @@ public:
     const Eigen::MatrixXd& getVertices() const   { return verts_; };
     const Eigen::MatrixXd& getNormalizedVertices() const   { return verts_normalized_; };
     const std::vector<GLMVertex>& getGLNormalizedVertices() const   { return gl_vertices_normalized_; };
-
     const Eigen::VectorXd& getMeanPoint() const  { return mean_point_; };
+
+    bool isClothSegmented() const                { return is_cloth_segmented_; };
+    // returns probability of being cloth for each vertex
+    const Eigen::VectorXd& getClothProbabilities() const { return verts_cloth_probability_; };
 
     void saveNormalizedMesh(std::string path) const;
 
 private:
     void readFile_(const std::string& filename);
+    void readClothProbabilitesFile_(const std::string& filename);
     void normalizeVertices_();
     void glFriendlyMesh_();
     void cutName_(const std::string& filename);
@@ -89,4 +93,8 @@ private:
     std::vector<unsigned int> gl_faces_;
 
     Eigen::VectorXd mean_point_;
+
+    // segmentation
+    bool is_cloth_segmented_;
+    Eigen::VectorXd verts_cloth_probability_;   // probability of being cloth
 };
