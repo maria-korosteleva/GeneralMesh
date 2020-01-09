@@ -46,7 +46,7 @@ public:
         glm::vec3 normal;
     };
 
-    GeneralMesh(const char* input_filename_c, Gender gender = UNKNOWN);
+    GeneralMesh(const std::string& input_filename, Gender gender = UNKNOWN);
     ~GeneralMesh();
 
     const std::string& getName() const           { return name_; };
@@ -72,7 +72,7 @@ private:
     void normalizeVertices_();
     void glFriendlyMesh_();
     void cutName_(const std::string& filename);
-    bool checkFileExist_(const char * filename);
+    bool checkFileExist_(const std::string& filename);
 
     std::string name_;
     std::string name_with_group_;

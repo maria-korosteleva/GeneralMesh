@@ -2,16 +2,15 @@
 #include "GeneralMesh.h"
 
 
-GeneralMesh::GeneralMesh(const char* input_filename_c, Gender gender)
+GeneralMesh::GeneralMesh(const std::string& input_filename, Gender gender)
     :gender_(gender)
 {   
     // check for existance
-    if (!checkFileExist_(input_filename_c))
+    if (!checkFileExist_(input_filename))
     {
         throw std::invalid_argument("General Mesh: input file doesn't exist");
     }
 
-    std::string input_filename(input_filename_c);
     cutName_(input_filename);
 
     readFile_(input_filename);
@@ -122,7 +121,7 @@ void GeneralMesh::cutName_(const std::string & filename)
     path_ = path;
 }
 
-bool GeneralMesh::checkFileExist_(const char * filename)
+bool GeneralMesh::checkFileExist_(const std::string& filename)
 {
     std::ifstream infile(filename);
     return infile.good();
