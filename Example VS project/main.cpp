@@ -4,7 +4,7 @@
 
 void main()
 {
-    GeneralMesh mesh("D:/Data/smpl_outs/pose_A.obj", "C:/Users/Maria/MyDocs/my_modules/GeneralMesh/key_vertices_example.txt");
+    GeneralMesh mesh("D:/Data/smpl_outs/pose_A.obj", GeneralMesh::FEMALE);
 
     std::cout << "Mesh " << mesh.getName() << " loaded" << std::endl;
 }

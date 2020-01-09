@@ -2,7 +2,7 @@
 #include "GeneralMesh.h"
 
 
-GeneralMesh::GeneralMesh(const char* input_filename_c, Gender gender, const char* key_vertices_filename)
+GeneralMesh::GeneralMesh(const char* input_filename_c, Gender gender)
     :gender_(gender)
 {   
     // check for existance
@@ -10,22 +10,13 @@ GeneralMesh::GeneralMesh(const char* input_filename_c, Gender gender, const char
     {
         throw std::invalid_argument("General Mesh: input file doesn't exist");
     }
-    if (key_vertices_filename != nullptr && !checkFileExist_(key_vertices_filename))
-    {
-        throw std::invalid_argument("General Mesh: key vertices file doesn't exist");
-    }
 
     std::string input_filename(input_filename_c);
     cutName_(input_filename);
 
     readFile_(input_filename);
     normalizeVertices_();
-    glFriendlyMesh_();
-
-    if (key_vertices_filename != nullptr)
-    {
-        readKeyVertices_(key_vertices_filename);
-    }    
+    glFriendlyMesh_();  
 
 }
 
@@ -129,31 +120,6 @@ void GeneralMesh::cutName_(const std::string & filename)
     name_with_group_ = data_group + "-" + object_name;
     name_ = object_name;
     path_ = path;
-}
-
-void GeneralMesh::readKeyVertices_(const char * filename)
-{
-    std::fstream inFile;
-    inFile.open(filename, std::ios_base::in);
-    int keys_n;
-    inFile >> keys_n;
-    // Sanity check
-    if (keys_n <= 0)
-    {
-        throw std::invalid_argument("Number of key vertices should be a positive number!");
-    }
-
-    std::string key_name;
-    int vertexId;
-    for (int i = 0; i < keys_n; i++)
-    {
-        inFile >> key_name;
-        inFile >> vertexId;
-
-        key_points_.insert(CoordsDictEntry(key_name, verts_.row(vertexId)));
-    }
-
-    inFile.close();
 }
 
 bool GeneralMesh::checkFileExist_(const char * filename)

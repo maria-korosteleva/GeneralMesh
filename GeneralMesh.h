@@ -30,8 +30,6 @@
 
 // for opengl-friendly conversion
 #include <glm/glm.hpp>
-using CoordsDictionary = std::map<std::string, Eigen::RowVectorXd>;
-using CoordsDictEntry = std::pair<std::string, Eigen::RowVectorXd>;
 
 class GeneralMesh
 {
@@ -48,7 +46,7 @@ public:
         glm::vec3 normal;
     };
 
-    GeneralMesh(const char* input_filename_c, Gender gender = UNKNOWN, const char* key_vertices_filename = nullptr);
+    GeneralMesh(const char* input_filename_c, Gender gender = UNKNOWN);
     ~GeneralMesh();
 
     const std::string& getName() const           { return name_; };
@@ -66,8 +64,6 @@ public:
     const std::vector<GLMVertex>& getGLNormalizedVertices() const   { return gl_vertices_normalized_; };
 
     const Eigen::VectorXd& getMeanPoint() const  { return mean_point_; };
-    // the user need to check the dictionary for emptiness
-    const CoordsDictionary& getKeyPoints() const  { return key_points_; }
 
     void saveNormalizedMesh(std::string path) const;
 
@@ -76,7 +72,6 @@ private:
     void normalizeVertices_();
     void glFriendlyMesh_();
     void cutName_(const std::string& filename);
-    void readKeyVertices_(const char * filename);
     bool checkFileExist_(const char * filename);
 
     std::string name_;
@@ -94,6 +89,4 @@ private:
     std::vector<unsigned int> gl_faces_;
 
     Eigen::VectorXd mean_point_;
-
-    CoordsDictionary key_points_;
 };
