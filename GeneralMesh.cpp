@@ -81,7 +81,7 @@ void GeneralMesh::readClothProbabilitesFile_(const std::string & filename)
 
     verts_cloth_probability_.resize(verts_.rows());
     int vert_id = 0;
-    float vert_raw_probability;
+    double vert_raw_probability;
     while (inFile >> vert_raw_probability)
     {
         if (vert_id >= verts_.rows()) // prevent crashes
@@ -95,6 +95,24 @@ void GeneralMesh::readClothProbabilitesFile_(const std::string & filename)
     // final sanity check
     if (vert_id != verts_.rows())
         throw std::invalid_argument("GeneralMesh: length of segmentation list doesn't match the number of vertices in the mesh.");
+
+    // fill out faces probs
+    updateFacesClothPorobabilities_(verts_cloth_probability_);
+}
+
+void GeneralMesh::updateFacesClothPorobabilities_(const Eigen::VectorXd & verts_probs)
+{
+    // very simple implementation, flat average of the face's vertices probabilities
+    faces_cloth_probability_.resize(faces_.rows());
+    for (int face_id = 0; face_id < faces_.rows(); face_id++)
+    {
+        double total_prob = 0.;
+        for (int dim = 0; dim < faces_.cols(); dim++)
+        {
+            total_prob += verts_probs[faces_(face_id, dim)];
+        }
+        faces_cloth_probability_[face_id] = total_prob / faces_.cols();
+    }
 }
 
 void GeneralMesh::normalizeVertices_()

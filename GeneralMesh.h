@@ -66,13 +66,15 @@ public:
 
     bool isClothSegmented() const                { return is_cloth_segmented_; };
     // returns probability of being cloth for each vertex
-    const Eigen::VectorXd& getClothProbabilities() const { return verts_cloth_probability_; };
+    const Eigen::VectorXd& getVertsClothProbabilities() const { return verts_cloth_probability_; };
+    const Eigen::VectorXd& getFacesClothProbabilities() const { return faces_cloth_probability_; };
 
     void saveNormalizedMesh(std::string path) const;
 
 private:
     void readFile_(const std::string& filename);
     void readClothProbabilitesFile_(const std::string& filename);
+    void updateFacesClothPorobabilities_(const Eigen::VectorXd& verts_probs);
     void normalizeVertices_();
     void glFriendlyMesh_();
     void cutName_(const std::string& filename);
@@ -97,4 +99,5 @@ private:
     // segmentation
     bool is_cloth_segmented_;
     Eigen::VectorXd verts_cloth_probability_;   // probability of being cloth
+    Eigen::VectorXd faces_cloth_probability_;
 };
