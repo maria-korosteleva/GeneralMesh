@@ -42,6 +42,8 @@ void GeneralMesh::readFile_(const std::string & filename)
 {
     std::size_t point_pos = filename.find_last_of('.');
     std::string extention = filename.substr(point_pos + 1);
+    std::transform(extention.begin(), extention.end(), extention.begin(),  ::tolower); // to lowercase
+
     bool sucess;
     if (extention == "obj")
     {
